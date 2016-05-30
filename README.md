@@ -1,4 +1,6 @@
-# Mathias’s dotfiles
+# Nate's version of Mathias’s dotfiles
+
+These are probably not the dotfiles you're looking for.  Visit https://mths.be/dotfiles for the source.
 
 ![Screenshot of my shell prompt](http://i.imgur.com/EkEtphC.png)
 
