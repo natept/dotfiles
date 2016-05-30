@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
+# About vim
+alias vi=vim
+alias svi='sudo vi'
+alias edit='vim'
+
+# Save me from myself
+alias cp='cp -i'
+alias ln='ln -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+# Make it human readable
+alias df='df -H'
+alias du='du -ch'
+
+# What's eating the CPU
+alias cpu='top -o cpu'
+
+# Who's got the memory?
+alias mem='top -o rsize'
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -9,11 +30,12 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
-alias d="cd ~/Documents/Dropbox"
+#alias d="cd ~/Documents/Dropbox" # Not currently used
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
-alias p="cd ~/projects"
+alias p="cd ~/Projects"
 alias g="git"
+alias gd="cd ~/Google\ Drive/"
 alias h="history"
 alias j="jobs"
 
@@ -28,10 +50,25 @@ fi
 alias l="ls -lF ${colorflag}"
 
 # List all files colorized in long format, including dot files
-alias la="ls -laF ${colorflag}"
+alias ll='l -a'
+
+# List hidden files colorized in long format
+alias l.='ll -d .*'
+
+# List all files colorized in long format, with inode
+alias li='ll -i'
+
+# Recursively list all files colorized in long format
+alias lr='ll -R'
+
+# List all files colorized in long format, largest entries last
+alias lrs='lr -Ss'
 
 # List only directories
-alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+alias lsd="l | grep --color=never '^d'"
+
+# Recursively list only directories
+alias lrd="lr | grep --color=never '^d'"
 
 # Always use color output for `ls`
 alias ls="command ls ${colorflag}"
