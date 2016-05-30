@@ -234,5 +234,7 @@
 
 [user]
 
-    name = Nate Perry-Thistle
-    email = nperry-thistle@patientwisdom.com
+	name = "Nate Perry-Thistle"
+	email = "nate@perry-thistle.net"
+	signingkey = "0BB7C17E"
+

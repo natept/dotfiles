@@ -110,6 +110,7 @@ brew install zopfli
 # More items for me
 brew install colordiff
 brew install curl
+brew install gnupg
 brew install mongo
 brew install npm
 brew install openssl
@@ -121,10 +122,10 @@ brew install tmux
 # Even more items for me
 brew cask install atom
 brew cask install flux
-brew cask install eithub-datomesktop
+brew cask install github-desktop
 brew cask install google-chrome
-brew cask install joinme
 brew cask install iterm2
+brew cask install joinme
 brew cask install sonos
 brew cask install slack
 

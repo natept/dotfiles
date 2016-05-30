@@ -1,0 +1,22 @@
+"*":
+  autosave:
+    enabled: true
+  core:
+    audioBeep: false
+    projectHome: "/Users/nate/src"
+    themes: [
+      "one-dark-ui"
+      "solarized-dark-syntax"
+    ]
+  editor:
+    invisibles: {}
+    preferredLineLength: 100
+    showInvisibles: true
+    tabType: "soft"
+  "exception-reporting":
+    userId: "f9c550cb-7df1-19c8-e696-1f8bcf2a88b9"
+  linter:
+    showErrorPanel: false
+  "todo-show": {}
+  welcome:
+    showOnStartup: false
