@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Collect some work alaises
+source ~/Work/platform/.aliases
