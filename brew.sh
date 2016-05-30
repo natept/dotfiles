@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
 # Install command-line tools using Homebrew.
+if [ ! -f /usr/local/bin/brew ]; then
+
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+fi
 
 # Make sure we’re using the latest Homebrew.
 brew update
 
 # Upgrade any already-installed formulae.
-brew upgrade --all
+brew upgrade --all --cleanup
 
 # Install GNU core utilities (those that come with OS X are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
@@ -101,6 +106,27 @@ brew install tree
 brew install vbindiff
 brew install webkit2png
 brew install zopfli
+
+# More items for me
+brew install colordiff
+brew install curl
+brew install mongo
+brew install npm
+brew install openssl
+brew install ossp-uuid
+brew install qt
+brew install readline
+brew install tmux
+
+# Even more items for me
+brew cask install atom
+brew cask install flux
+brew cask install eithub-datomesktop
+brew cask install google-chrome
+brew cask install joinme
+brew cask install iterm2
+brew cask install sonos
+brew cask install slack
 
 # Remove outdated versions from the cellar.
 brew cleanup

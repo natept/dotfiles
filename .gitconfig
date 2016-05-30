@@ -76,6 +76,57 @@
 		fi \
 	}; f"
 
+    # My personal additions or overwrites
+    alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+    amend = commit -a --amend
+    br = branch
+    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+    co = checkout
+    cob = checkout -b
+    cm = !git add -A && git commit -m
+    ec = config --global -e
+    lol = "log --pretty=oneline --abbrev-commit --graph --decorate"
+    rbm = !git fetch && git rebase origin/master
+    save = !git add -A && git commit -m 'SAVEPOINT'
+    st = status
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+    undo = reset HEAD~1 --mixed
+    wip = !git add -u && git commit -m "WIP"
+    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+
+    # Patient Wisdom Release functions
+    release-beta = "!f() { \
+        export TAG=`date -u +"%Y%m%d-%H%M%S-UTC"` && \
+        git checkout master && \
+        git pull && \
+        git checkout beta && \
+        git merge master && \
+        git tag -a ${TAG} -m 'Scripted release' && \
+        git push origin head && \
+        git push origin ${TAG}; \
+    }; f"
+    release-production = "!f() { \
+        export TAG=`date -u +"%Y%m%d-%H%M%S-UTC"` && \
+        git checkout beta && \
+        git pull && \
+        git checkout production && \
+        git merge beta && \
+        git tag -a ${TAG} -m 'Scripted release' && \
+        git push origin head && \
+        git push origin ${TAG}; \
+    }; f"
+    release-cat = "!f() { \
+        export TAG=`date -u +"%Y%m%d-%H%M%S-UTC"` && \
+        git checkout beta && \
+        git pull && \
+        git checkout yale && \
+        git merge beta && \
+        git tag -a ${TAG} -m 'Scripted release' && \
+        git push origin head && \
+        git push origin ${TAG}; \
+    }; f"
+
 [apply]
 
 	# Detect whitespace errors when applying a patch
@@ -180,3 +231,8 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
+
+[user]
+
+    name = Nate Perry-Thistle
+    email = nperry-thistle@patientwisdom.com
