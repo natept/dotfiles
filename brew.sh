@@ -59,6 +59,9 @@ brew install sfnt2woff
 brew install sfnt2woff-zopfli
 brew install woff2
 
+# Satisfy aircrack-ng requirement
+brew install Caskroom/cask/java
+
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
 brew install aircrack-ng
 brew install bfg
@@ -82,8 +85,10 @@ brew install tcpflow
 brew install tcpreplay
 brew install tcptrace
 brew install ucspi-tcp # `tcpserver` etc.
-brew install xpdf
 brew install xz
+
+brew install Caskroom/cask/xquartz
+brew install homebrew/x11/xpdf
 
 # Install other useful binaries.
 brew install ack
