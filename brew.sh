@@ -111,6 +111,9 @@ brew install tree
 brew install vbindiff
 brew install webkit2png
 brew install zopfli
+brew install gpg
+brew install gpg-agent
+brew install pinentry-mac
 
 # More items for me
 brew install colordiff

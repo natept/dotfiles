@@ -46,3 +46,20 @@ complete -W "NSGlobalDomain" defaults;
 
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+
+# Enable gpg-agent
+GPG_TTY=$(tty)
+export GPG_TTY
+if [ -f "${HOME}/.gnupg/gpg-agent-info" ]; then
+  . "${HOME}/.gnupg/gpg-agent-info"
+  export GPG_AGENT_INFO
+fi
+eval "$(gpg-agent --daemon --pinentry-program /usr/local/bin/pinentry)";
+
+# Enable ssh-agent
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval `ssh-agent`
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+ssh-add -l | grep "The agent has no identities" && ssh-add
