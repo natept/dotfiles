@@ -97,7 +97,7 @@
 
     # Patient Wisdom Release functions
     release-beta = "!f() { \
-        export TAG=`date -u +"%Y%m%d-%H%M%S-UTC"` && \
+        export TAG=`date -u +"%Y%m%d-%H"` && \
         git checkout master && \
         git pull && \
         git checkout beta && \
@@ -107,7 +107,7 @@
         git push origin ${TAG}; \
     }; f"
     release-production = "!f() { \
-        export TAG=`date -u +"%Y%m%d-%H%M%S-UTC"` && \
+        export TAG=`date -u +"%Y%m%d-%H"` && \
         git checkout beta && \
         git pull && \
         git checkout production && \
@@ -117,7 +117,7 @@
         git push origin ${TAG}; \
     }; f"
     release-cat = "!f() { \
-        export TAG=`date -u +"%Y%m%d-%H%M%S-UTC"` && \
+        export TAG=`date -u +"%Y%m%d-%H"` && \
         git checkout beta && \
         git pull && \
         git checkout yale && \
