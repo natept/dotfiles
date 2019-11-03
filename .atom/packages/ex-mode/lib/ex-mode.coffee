@@ -36,6 +36,9 @@ module.exports = ExMode =
     @vim = vim
     @globalExState.setVim(vim)
 
+  consumeVimModePlus: (vim) ->
+    this.consumeVim(vim)
+
   config:
     splitbelow:
       title: 'Split below'
@@ -45,5 +48,10 @@ module.exports = ExMode =
     splitright:
       title: 'Split right'
       description: 'when splitting, split from right'
+      type: 'boolean'
+      default: 'false'
+    gdefault:
+      title: 'Gdefault'
+      description: 'When on, the ":substitute" flag \'g\' is default on'
       type: 'boolean'
       default: 'false'

@@ -1,41 +1,48 @@
+### Project specific config ###
 language: ruby
-rvm:
-  - 2.2.3
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+    - os: linux
+      rvm: 2.3.1
+      env: ATOM_CHANNEL=stable
 
-env:
-  matrix:
-    - ATOM_CHANNEL=stable
-    - ATOM_CHANNEL=beta
+    - os: linux
+      rvm: 2.3.1
+      env: ATOM_CHANNEL=beta
 
 install:
   - gem install scss_lint
 
 before_script:
   - scss-lint --version
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh'
+
+### Generic setup follows ###
+script:
+  - curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
+  - chmod u+x build-package.sh
+  - ./build-package.sh
 
 notifications:
   email:
     on_success: never
     on_failure: change
 
+branches:
+  only:
+    - master
+
 git:
   depth: 10
 
 sudo: false
 
+dist: trusty
+
 addons:
   apt:
     packages:
     - build-essential
-    - git
-    - libgnome-keyring-dev
     - fakeroot
-
-branches:
-  only:
-    - master
+    - git
+    - libsecret-1-dev

@@ -1,3 +1,49 @@
+## (unpublished)
+
+## 0.18.0
+
+* Add Gdefault support ([#191](https://github.com/lloeki/ex-mode/pull/191))
+* Add :sort command ([#190](https://github.com/lloeki/ex-mode/pull/190))
+
+## 0.17.0
+
+* Add support for Atom 1.19 ([#185](https://github.com/lloeki/ex-mode/pull/185))
+* Added support for canceling ex-mode with Ctrl-C ([#186](https://github.com/lloeki/ex-mode/pull/186))
+
+## 0.16.0
+
+* Support for Atom 1.18 and 1.19 ([#184](https://github.com/lloeki/ex-mode/pull/184))
+
+## 0.15.0
+* `vim-mode-plus` support!
+  - Add keybinding (@jmarianer)
+  - Support `:substitute` command (@mkiken)
+  - Support marks
+  - Use `vim-mode-plus` in specs
+
+## 0.14.0
+* Support `:tabonly` (@jmarianer)
+* Fix `:x` closing Atom instead of the current pane
+
+## 0.13.1
+* Limit addresses to the last line
+* Fix autocompleting a non existent directory (@mcnicholls)
+
+## 0.13.0
+* Added basic support for visual marks (e.g. `:'<,'>s/foo/bar`)
+* Added `smartcase` option to `:set`
+* Fixed using marks as addresses (e.g. `:'a,.delete`)
+* Fixed search not working without a closing delimiter (e.g. `:/foo`)
+
+## 0.12.0
+* Added file and command autocomplete (@stuartquin)
+* Added `splitbelow` and `splitright` options to `:set`
+* Fixed the editor not updating when saving a new file with `:w` or `:saveas`
+
+## 0.11.0
+
+* Stop using non-standard Promise.defer (fixes issue with `:w`) (@AsaAyers)
+
 ## 0.9.0
 
 * Added support for yank commands, ex `:1,10y` (@posgarou)

@@ -2,7 +2,7 @@ helpers = require './spec-helper'
 describe "the input element", ->
   [editor, editorElement, vimState, exState] = []
   beforeEach ->
-    vimMode = atom.packages.loadPackage('vim-mode')
+    vimMode = atom.packages.loadPackage('vim-mode-plus')
     exMode = atom.packages.loadPackage('ex-mode')
     waitsForPromise ->
       activationPromise = exMode.activate()
@@ -26,7 +26,6 @@ describe "the input element", ->
         atom.commands.dispatch(getCommandEditor(), "core:cancel")
         vimState = vimMode.mainModule.getEditorState(editor)
         exState = exMode.mainModule.exStates.get(editor)
-        vimState.activateNormalMode()
         vimState.resetNormalMode()
         editor.setText("abc\ndef\nabc\ndef")
 
@@ -70,6 +69,7 @@ describe "the input element", ->
     expect(getVisibility()).toBe true
     commandEditor = getCommandEditor()
     model = commandEditor.getModel()
+    expect(model.getText()).toBe ''
     model.setText('abc')
     atom.commands.dispatch(commandEditor, "core:backspace")
     expect(getVisibility()).toBe true
@@ -82,3 +82,11 @@ describe "the input element", ->
     expect(model.getText()).toBe ''
     atom.commands.dispatch(commandEditor, "core:backspace")
     expect(getVisibility()).toBe false
+
+  it "contains '<,'> when opened while there are selections", ->
+    editor.setCursorBufferPosition([0, 0])
+    editor.selectToBufferPosition([0, 1])
+    editor.addCursorAtBufferPosition([2, 0])
+    editor.selectToBufferPosition([2, 1])
+    atom.commands.dispatch(editorElement, "ex-mode:open")
+    expect(getCommandEditor().getModel().getText()).toBe "'<,'>"

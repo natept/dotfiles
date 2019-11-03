@@ -4,19 +4,20 @@
   core:
     audioBeep: false
     projectHome: "/Users/nate/src"
+    telemetryConsent: "no"
     themes: [
       "one-dark-ui"
       "solarized-dark-syntax"
     ]
   editor:
+    fontSize: 19
     invisibles: {}
     preferredLineLength: 100
     showInvisibles: true
     tabType: "soft"
   "exception-reporting":
     userId: "f9c550cb-7df1-19c8-e696-1f8bcf2a88b9"
-  linter:
-    errorPanelHeight: 53
+  linter: {}
   "todo-show": {}
   welcome:
     showOnStartup: false

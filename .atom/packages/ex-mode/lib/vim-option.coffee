@@ -20,4 +20,46 @@ class VimOption
   nonu: =>
     @nonumber()
 
+  splitright: =>
+    atom.config.set("ex-mode.splitright", true)
+
+  spr: =>
+    @splitright()
+
+  nosplitright: =>
+    atom.config.set("ex-mode.splitright", false)
+
+  nospr: =>
+    @nosplitright()
+
+  splitbelow: =>
+    atom.config.set("ex-mode.splitbelow", true)
+
+  sb: =>
+    @splitbelow()
+
+  nosplitbelow: =>
+    atom.config.set("ex-mode.splitbelow", false)
+
+  nosb: =>
+    @nosplitbelow()
+
+  smartcase: =>
+    atom.config.set("vim-mode.useSmartcaseForSearch", true)
+
+  scs: =>
+    @smartcase()
+
+  nosmartcase: =>
+    atom.config.set("vim-mode.useSmartcaseForSearch", false)
+
+  noscs: =>
+    @nosmartcase()
+
+  gdefault: =>
+    atom.config.set("ex-mode.gdefault", true)
+
+  nogdefault: =>
+    atom.config.set("ex-mode.gdefault", false)
+
 module.exports = VimOption

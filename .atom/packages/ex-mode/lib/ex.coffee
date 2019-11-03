@@ -4,12 +4,26 @@ fs = require 'fs-plus'
 VimOption = require './vim-option'
 _ = require 'underscore-plus'
 
+defer = () ->
+  deferred = {}
+  deferred.promise = new Promise((resolve, reject) ->
+    deferred.resolve = resolve
+    deferred.reject = reject
+  )
+  return deferred
+
+
 trySave = (func) ->
-  deferred = Promise.defer()
+  deferred = defer()
 
   try
-    func()
-    deferred.resolve()
+    response = func()
+
+    if response instanceof Promise
+      response.then ->
+        deferred.resolve()
+    else
+      deferred.resolve()
   catch error
     if error.message.endsWith('is a directory')
       atom.notifications.addWarning("Unable to save file: #{error.message}")
@@ -109,6 +123,11 @@ class Ex
   @registerAlias: (alias, name) =>
     @singleton()[alias] = (args) => @singleton()[name](args)
 
+  @getCommands: () =>
+    Object.keys(Ex.singleton()).concat(Object.keys(Ex.prototype)).filter((cmd, index, list) ->
+      list.indexOf(cmd) == index
+    )
+
   quit: ->
     atom.workspace.getActivePane().destroyActiveItem()
 
@@ -148,6 +167,16 @@ class Ex
     pane.activatePreviousItem()
 
   tabp: => @tabprevious()
+
+  tabonly: ->
+    tabBar = atom.workspace.getPanes()[0]
+    tabBarElement = atom.views.getView(tabBar).querySelector(".tab-bar")
+    tabBarElement.querySelector(".right-clicked") && tabBarElement.querySelector(".right-clicked").classList.remove("right-clicked")
+    tabBarElement.querySelector(".active").classList.add("right-clicked")
+    atom.commands.dispatch(tabBarElement, 'tabs:close-other-tabs')
+    tabBarElement.querySelector(".active").classList.remove("right-clicked")
+
+  tabo: => @tabonly()
 
   edit: ({ range, args, editor }) ->
     filePath = args.trim()
@@ -194,7 +223,7 @@ class Ex
     if filePath.indexOf(' ') isnt -1
       throw new CommandError('Only one file name allowed')
 
-    deferred = Promise.defer()
+    deferred = defer()
 
     editor = atom.workspace.getActiveTextEditor()
     saved = false
@@ -213,7 +242,7 @@ class Ex
     if not saved and fullPath?
       if not force and fs.existsSync(fullPath)
         throw new CommandError("File exists (add ! to override)")
-      if saveas
+      if saveas or editor.getFileName() == null
         editor = atom.workspace.getActiveTextEditor()
         trySave(-> editor.saveAs(fullPath, editor)).then(deferred.resolve)
       else
@@ -228,7 +257,7 @@ class Ex
     @write(args)
 
   wq: (args) =>
-    @write(args).then => @quit()
+    @write(args).then(=> @quit())
 
   wa: =>
     @wall()
@@ -252,6 +281,7 @@ class Ex
 
   xit: (args) => @wq(args)
 
+  x: (args) => @xit(args)
 
   split: ({ range, args }) ->
     args = args.trim()
@@ -310,16 +340,30 @@ class Ex
 
     [pattern, substition, flags] = parsed
     if pattern is ''
-      pattern = vimState.getSearchHistoryItem()
+      if vimState.getSearchHistoryItem?
+        # vim-mode
+        pattern = vimState.getSearchHistoryItem()
+      else if vimState.searchHistory?
+        # vim-mode-plus
+        pattern = vimState.searchHistory.get('prev')
+
       if not pattern?
         atom.beep()
         throw new CommandError('No previous regular expression')
     else
-      vimState.pushSearchHistory(pattern)
+      if vimState.pushSearchHistory?
+        # vim-mode
+        vimState.pushSearchHistory(pattern)
+      else if vimState.searchHistory?
+        # vim-mode-plus
+        vimState.searchHistory.save(pattern)
 
     try
       flagsObj = {}
       flags.split('').forEach((flag) -> flagsObj[flag] = true)
+      # gdefault option
+      if atom.config.get('ex-mode.gdefault')
+        flagsObj.g = !flagsObj.g
       patternRE = getSearchTerm(pattern, flagsObj)
     catch e
       if e.message.indexOf('Invalid flags supplied to RegExp constructor') is 0
@@ -400,5 +444,25 @@ class Ex
           if not optionProcessor?
             throw new CommandError("No such option: #{option}")
           optionProcessor()
+
+  sort: ({ range }) =>
+    editor = atom.workspace.getActiveTextEditor()
+    sortingRange = [[]]
+
+    # If no range is provided, the entire file should be sorted.
+    isMultiLine = range[1] - range[0] > 1
+    if isMultiLine
+      sortingRange = [[range[0], 0], [range[1] + 1, 0]]
+    else
+      sortingRange = [[0, 0], [editor.getLastBufferRow(), 0]]
+
+    # Store every bufferedRow string in an array.
+    textLines = []
+    for lineIndex in [sortingRange[0][0]..sortingRange[1][0] - 1]
+      textLines.push(editor.lineTextForBufferRow(lineIndex))
+
+    # Sort the array and join them together with newlines for writing back to the file.
+    sortedText = _.sortBy(textLines).join('\n') + '\n'
+    editor.buffer.setTextInRange(sortingRange, sortedText)
 
 module.exports = Ex
